@@ -10,7 +10,7 @@ function UserInterface() {
       <Button 
       variant='contained'
       fullWidth='true'
-      ><strong>Try it free 7 days</strong>&nbsp;then $20/mo. thereafter</Button>
+      >Try it free 7 days then $20/mo. thereafter</Button>
       <Form>
         
       </Form>

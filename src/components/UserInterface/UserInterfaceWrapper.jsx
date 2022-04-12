@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const UserInterfaceWrapper = styled.div`
-    width:35%;
+    width:100%;
 
     button {
       background: hsl(248, 32%, 49%);
@@ -9,5 +9,6 @@ export const UserInterfaceWrapper = styled.div`
       font-family: 'Poppins', sans-serif;
       height: 60px;
       border-radius: 10px;
+      margin-bottom: 20px;
     }
 `

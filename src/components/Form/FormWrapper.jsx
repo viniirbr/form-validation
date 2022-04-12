@@ -4,6 +4,6 @@ export const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   background: white;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 20px;
 `

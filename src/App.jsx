@@ -14,7 +14,14 @@ function App() {
 
 const AppWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
+  padding: 50px 15px 30px 15px;
+
+  @media screen and (min-width: 730px) {
+    flex-direction: row;
+    padding: 5% 10%;
+  }
 `
 
 export default App;
