@@ -1,57 +1,121 @@
 import React, { useState } from 'react'
-import TextField from '@mui/material/TextField';
+import { TextField, Typography } from '@mui/material';
 import { FormWrapper } from './FormWrapper';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { useForm } from 'react-hook-form'
 
 function Form() {
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [birthday, setBirthday] = useState(new Date());
   const [password, setPassword] = useState('');
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const log = (e) => {
-    e.preventDefault();
-    window.alert('Você logou!')
+  //console.log(register('test'))
+  console.log(errors)
+
+
+  const isOlderThan18 = () => {
+    const birth = new Date(birthday)
+    const dateIf18 = new Date(birth.getUTCFullYear() + 18, birth.getUTCMonth(), birth.getUTCDay());
+    const today = new Date();
+    return (dateIf18 <= today);
   }
+
   return (
-    <FormWrapper onSubmit={log}>
+    <FormWrapper onSubmit={handleSubmit((data) => {
+      console.log(data)
+    })}>
       <TextField
         variant="outlined"
+        {...register('firstname',
+          {
+            required: 'The first name input must be filled.',
+            minLength: {
+              value: 4,
+              message: 'The first name input should have more than 3 letters.'
+            }
+
+          })}
+        error={errors.firstname === undefined ? false : true}
+        helperText={errors.firstname?.message}
         type='text'
         label='First Name'
-        required
         sx={{ mb: '15px' }}
         value={firstName}
         onChange={(e) => setFirstName(e.target.value)} />
 
       <TextField
         variant="outlined"
+        {...register('lastname',
+          {
+            required: 'The last name input must be filled.',
+            minLength: {
+              value: 4,
+              message: 'The last name input should have more than 3 letters.'
+            }
+          })}
+        error={errors.lastname === undefined ? false : true}
+        helperText={errors.lastname?.message}
         type='text'
         label='Last Name'
         sx={{ mb: '15px' }}
-        required
         value={lastName}
         onChange={(e) => setLastName(e.target.value)} />
 
       <TextField
         variant="outlined"
-        type='email'
+        {...register('email', {
+          required: 'The email input must be filled.',
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+            message: 'Enter a valid e-mail address.'
+          }
+        })}
+        error={errors.email === undefined ? false : true}
+        helperText={errors.email?.message}
         label='Email address'
         sx={{ mb: '15px' }}
-        required
         value={email}
         onChange={(e) => setEmail(e.target.value)} />
-        
+
       <TextField
         variant="outlined"
+        {...register('date',
+          {
+            required: 'The date input must be filled.',
+            validate: isOlderThan18 || 'teste'
+          })}
+        error={errors.date === undefined ? false : true}
+        //helperText={errors.date?.validate.older}
+        type='date'
+        sx={{ mb: '15px' }}
+        value={birthday}
+        onChange={(e) => {
+          setBirthday(e.target.value);
+        }} />
+
+      <TextField
+        variant="outlined"
+        {...register('password',
+          {
+            required: 'The password input must be filled.',
+            pattern: {
+              value: /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[])/,
+              message: 'The password should have at least one digit, one lowercase letter, one uppercase letter and one special character.',
+
+            },
+          })}
+        error={errors.password === undefined ? false : true}
+        helperText={errors.password?.message}
         type='password'
         label='Password'
         sx={{ mb: '15px' }}
-        required
         value={password}
         onChange={(e) => setPassword(e.target.value)} />
+
       <Button
         variant='contained'
         style={{ background: 'hsl(154, 59%, 51%)' }}

@@ -9,7 +9,7 @@ function UserInterface() {
     <UserInterfaceWrapper>
       <Button 
       variant='contained'
-      fullWidth='true'
+      fullWidth={true}
       >Try it free 7 days then $20/mo. thereafter</Button>
       <Form>
         
