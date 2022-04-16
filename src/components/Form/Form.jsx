@@ -16,10 +16,8 @@ function Form() {
     return (dateIf18 <= today);
   }
 
-  console.log(errors)
-
   const onSubmit = (e) => {
-    console.log(e)
+    window.alert('Congratulations! You have signed up!')
   }  
 
   return (
