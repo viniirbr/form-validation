@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { TextField, Typography } from '@mui/material';
 import { FormWrapper } from './FormWrapper';
 import Button from '@mui/material/Button';
@@ -6,28 +6,24 @@ import { useForm } from 'react-hook-form'
 
 function Form() {
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [birthday, setBirthday] = useState(new Date());
-  const [password, setPassword] = useState('');
-  const { register, handleSubmit, formState: { errors } } = useForm();
-
-  //console.log(register('test'))
-  console.log(errors)
+  const { register, handleSubmit, watch, formState: { errors }} = useForm();
 
 
   const isOlderThan18 = () => {
-    const birth = new Date(birthday)
+    const birth = new Date(watch('date'))
     const dateIf18 = new Date(birth.getUTCFullYear() + 18, birth.getUTCMonth(), birth.getUTCDay());
     const today = new Date();
     return (dateIf18 <= today);
   }
 
+  console.log(errors)
+
+  const onSubmit = (e) => {
+    console.log(e)
+  }  
+
   return (
-    <FormWrapper onSubmit={handleSubmit((data) => {
-      console.log(data)
-    })}>
+    <FormWrapper onSubmit={handleSubmit(onSubmit)}>
       <TextField
         variant="outlined"
         {...register('firstname',
@@ -37,15 +33,13 @@ function Form() {
               value: 4,
               message: 'The first name input should have more than 3 letters.'
             }
-
           })}
         error={errors.firstname === undefined ? false : true}
         helperText={errors.firstname?.message}
         type='text'
         label='First Name'
         sx={{ mb: '15px' }}
-        value={firstName}
-        onChange={(e) => setFirstName(e.target.value)} />
+        />
 
       <TextField
         variant="outlined"
@@ -62,8 +56,7 @@ function Form() {
         type='text'
         label='Last Name'
         sx={{ mb: '15px' }}
-        value={lastName}
-        onChange={(e) => setLastName(e.target.value)} />
+    />
 
       <TextField
         variant="outlined"
@@ -71,15 +64,13 @@ function Form() {
           required: 'The email input must be filled.',
           pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-            message: 'Enter a valid e-mail address.'
+            message: 'Enter a valid email address.'
           }
         })}
         error={errors.email === undefined ? false : true}
         helperText={errors.email?.message}
         label='Email address'
-        sx={{ mb: '15px' }}
-        value={email}
-        onChange={(e) => setEmail(e.target.value)} />
+        sx={{ mb: '15px' }} />
 
       <TextField
         variant="outlined"
@@ -89,13 +80,9 @@ function Form() {
             validate: isOlderThan18 || 'teste'
           })}
         error={errors.date === undefined ? false : true}
-        //helperText={errors.date?.validate.older}
+        helperText={errors.date && 'You should be more than 18 to sign up.'}
         type='date'
-        sx={{ mb: '15px' }}
-        value={birthday}
-        onChange={(e) => {
-          setBirthday(e.target.value);
-        }} />
+        sx={{ mb: '15px' }} />
 
       <TextField
         variant="outlined"
@@ -112,9 +99,7 @@ function Form() {
         helperText={errors.password?.message}
         type='password'
         label='Password'
-        sx={{ mb: '15px' }}
-        value={password}
-        onChange={(e) => setPassword(e.target.value)} />
+        sx={{ mb: '15px' }} />
 
       <Button
         variant='contained'
